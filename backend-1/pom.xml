@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lk.ijse.absd</groupId>
-    <artifactId>file-upload-with-spring-and-angular</artifactId>
+    <artifactId>backend-1</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
 

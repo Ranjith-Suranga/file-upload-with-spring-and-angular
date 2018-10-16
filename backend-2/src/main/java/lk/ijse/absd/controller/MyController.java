@@ -4,7 +4,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,20 +13,38 @@ import java.net.URISyntaxException;
 @RequestMapping("api/v1/test")
 public class MyController {
 
+    /**
+     * In order to work with HTTP PUT method, you need to create a custom multipart resolver
+     *
+     * @param myFile
+     * @param isFile
+     * @param multipartFile2
+     * @return
+     */
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean saveFile(@RequestPart("myFile") MultipartFile myFile,
-                         @RequestPart("myFile") byte[] isFile,
-                         @RequestPart("myFile") Part myPart) {
+                            @RequestPart("myFile") byte[] isFile,
+                            @RequestParam("myFile") MultipartFile multipartFile2) {
         /*
-         * There are three ways we can obtain this value, but in all cases we need to use
+         * There are two ways that we can obtain this value, but in all cases we need to use
          * @RequestPart annotation.
          * 1. Byte Array ( byte [] )
          * 2. MultipartFile ( Spring way )
-         * 3. Part ( Java EE way )
+         */
+
+        /*
+         * It is important to note that Apache Common File Upload is not going to work with
+         * javax.servlet.http.Part
          */
 
         System.out.println(isFile);
-        System.out.println(myPart.getSubmittedFileName());
+
+        /**
+         * It is important to note that you can also use @RequestParam annotation if you need
+         * But with that you can't retrieve the data as a byte array
+         */
+
+        System.out.println(multipartFile2.getOriginalFilename());
 
         try {
             // Let's get the project location
